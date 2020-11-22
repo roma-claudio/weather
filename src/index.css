@@ -5,9 +5,86 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+}
+
+html, #root {
+  height: 100%;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.selected {
+    color: #495057;
+    background-color: #fff;
+    border-color: #80bdff;
+    outline: 0;
+    /*box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);*/
+}
+
+.display-5 {
+    font-size: 1.5rem;
+    font-weight: 300;
+    line-height: 1.2;  
+}
+
+.compensate-left {
+  margin-left: -0.06em;
+}
+
+.z-0 {
+  z-index: 0!important;
+}
+
+.z-1 {
+  z-index: 1!important;
+}
+
+.bg-image {
+  background-image: url("/fuji.jpg");
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  /*position: relative;*/
+}
+
+.transparent {
+  background-color: #ffffff69;
+}
+
+.list-group {
+  width: 100%;
+  padding-right: 30px;
+  overflow-y: scroll;
+  max-height: 45vh;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.list-group::-webkit-scrollbar {
+  display: none;
+}
+
+.list-group-item {
+  border-top-width: 1px!important;
+  border-bottom-width: 1px!important;
+}
+
+.list-group-item:hover{
+  cursor: pointer;
+  border-color: #80bdff;
+  outline: 0;
+}
+
+.form-control:focus {
+  box-shadow: none;
+}
+
+.tiny {
+  width: 200px;
+  padding-right: 0px;
 }

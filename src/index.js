@@ -1,12 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import './index.css';
-import App from './App';
+import Search from './Search.js';
+import Result from './Result';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <Switch>
+        <Route exact strict path="/(.*.{1,})">
+          <Result/> 
+        </Route>
+        <Route>
+          <Search/>
+        </Route>
+      </Switch>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );
