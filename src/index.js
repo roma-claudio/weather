@@ -10,7 +10,7 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Switch>
-        <Route exact strict path="/(.*.{1,})">
+        <Route exact strict path="/weather/(.*.{1,})">
           <Result/> 
         </Route>
         <Route>

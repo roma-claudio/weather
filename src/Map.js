@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import SearchBox from './Component';
 import Chart from "chart.js";
 import { withRouter } from "react-router-dom";
 
@@ -45,21 +44,6 @@ class Map extends Component {
     fetch("https://nodejs-295719.ew.r.appspot.com/stats?lat="+lat+"&long="+long)
     .then( response => response.json())
     .then( (response) => {
-
-        console.log(response.meta);
-
-        /*
-        this.setState({
-          stats: {
-            start: response.meta.start,
-            end: response.meta.end,
-            executionTime: response.meta.exec_time,
-            generatedTime: response.meta.generated,
-            source: response.meta.source
-          }
-        });
-        */
-        
 
         //Remove the label from the chart
         Chart.defaults.global.legend.display = false;
@@ -275,17 +259,14 @@ class Map extends Component {
   
   render() {
     console.log("Component is rendering\n");
-    let cityName= decodeURIComponent(document.location.pathname.replace("/","").split("&")[0]);
+    let cityName= decodeURIComponent(document.location.pathname.replace("/weather/","").split("&")[0]);
     let lat = document.location.pathname.replace("/","").split("&")[1];
     let long = document.location.pathname.replace("/","").split("&")[2];
     return (
-          <Fragment>            
-            <div className="row align-items-center h-100" key={Date.now()}>
-              <div className="col-8 mx-auto card chart-card border-0">
+          <Fragment>
+            <div className="row align-items-center h-90" key={Date.now()}>
+              <div className="col-9 mx-auto card border-0 chart-card">
                 <div className="card-body p-2 pb-0">
-                  <p className="align-self-end float-right">
-                    <SearchBox size="tiny"/>
-                  </p>
                   <p className="display-3 align-self-end compensate-left">
                     {cityName}
                   </p>

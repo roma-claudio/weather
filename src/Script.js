@@ -8,5 +8,13 @@ function ChartJS() {
     );
 }
 
+function FontAwesome() {
+    return (
+        <Fragment>
+           <script src="https://kit.fontawesome.com/e799faf1eb.js" crossOrigin="anonymous"></script>
+        </Fragment>
+    );
+}
 
-export {ChartJS };
+
+export {ChartJS, FontAwesome};

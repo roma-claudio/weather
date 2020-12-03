@@ -8,7 +8,7 @@ body {
   height: 100%;
 }
 
-html, #root {
+html, #root{
   height: 100%;
 }
 
@@ -43,13 +43,27 @@ code {
   z-index: 1!important;
 }
 
+.h-10 {
+  height: 10%!important;  
+}
+
+.h-90 {
+  height: 90%!important;
+}
+
+.mb-7 {
+  margin-bottom: 12rem!important;
+}
+
 .bg-image {
-  background-image: url("/fuji.jpg");
-  height: 100%;
+  position: absolute;
+  background-image: url("/weather/ngari-china.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  /*position: relative;*/
+  filter: brightness(35%);
+  height: 100%;
+  width: 100%;
 }
 
 .transparent {
@@ -60,7 +74,7 @@ code {
   width: 100%;
   padding-right: 30px;
   overflow-y: scroll;
-  max-height: 45vh;
+  max-height: 40vh;
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
@@ -88,3 +102,12 @@ code {
   width: 200px;
   padding-right: 0px;
 }
+
+.previous-btn {
+  transition: all .2s ease-in-out;
+}
+
+.previous-btn:hover {
+  cursor: pointer;
+  transform: scale(1.5);
+} 

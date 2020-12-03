@@ -59,13 +59,14 @@ class SearchBox extends Component{
     }
 
     onClick = (event,suggestion,lat,long) => {
-        this.props.history.push("/"+suggestion+"&"+lat+"&"+long);
+        this.props.history.push("/weather/"+suggestion+"&"+lat+"&"+long);
         return;
     }
 
     onKeyDown = e => {
         //Arrow down
         if (e.keyCode === 40) {
+            /*
             if ( (this.state.suggestions.length - 1) === this.state.selected) return;
             e.target.value = this.state.suggestions[this.state.selected + 1];
             this.setState({
@@ -73,11 +74,13 @@ class SearchBox extends Component{
                 show: false,
                 input: this.state.suggestions[this.state.selected + 1],
             })
+            */
             return;
         }
 
         //Arrow up
         if (e.keyCode === 38) {
+            /*
             if (this.state.selected === 0 ) return;
             e.target.value = this.state.suggestions[this.state.selected - 1];
             this.setState({
@@ -85,14 +88,43 @@ class SearchBox extends Component{
                 show: false,
                 input: this.state.suggestions[this.state.selected - 1],
             })
+            */
             return;
         }
 
         //Enter
         if (e.keyCode === 13) {
-            this.props.history.push("/"+this.state.suggestions[this.state.selected]+"&"+this.state.coordinates[this.state.selected][0]+"&"+this.state.coordinates[this.state.selected][1]);
+            /*
+            this.props.history.push(document.location.pathname+"/"+this.state.suggestions[this.state.selected]+"&"+this.state.coordinates[this.state.selected][0]+"&"+this.state.coordinates[this.state.selected][1]);
             return;
+            */
         }
+    }
+
+    scrollToSelected = elementId => {
+        document.getElementById(elementId).childNodes.forEach( (e) =>  {
+            if (e.classList.contains('selected') && !this.isInViewport(e)) e.scrollIntoView(true);
+        });
+        
+    }
+
+    isInViewport = element => {
+        const rect = element.getBoundingClientRect();
+        console.log(rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth))
+        return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+    }
+
+    componentDidUpdate() {
+        console.log('componentDidUpdate()');
+        this.scrollToSelected('result-list')
     }
 
     render() {
@@ -115,12 +147,18 @@ class SearchBox extends Component{
        
         return(
             <Fragment>
-                <input className={this.props.size === "tiny" ? "form-control transparent tiny" : "form-control transparent"} type="text" placeholder="City" aria-label="City" onChange={this.onChange} onKeyDown={this.onKeyDown}/>
-                <ul id="result-list" className={this.props.size === 'tiny' ? "list-group position-absolute tiny": "list-group position-absolute"}>
+                <div className="input-group">
+                    <div className="input-group-prepend">
+                        <span className="input-group-text rounded-0" id="basic-addon1">
+                            <i className="fas fa-search fa-xs"></i>
+                        </span>
+                    </div>
+                    <input className={this.props.size === "tiny" ? "form-control rounded-0 tiny" : "form-control rounded-0"} type="text" placeholder="City" aria-label="City" onChange={this.onChange} onKeyDown={this.onKeyDown}/>
+                </div>
+                <ul id="result-list" className={this.props.size === 'tiny' ? "list-group position-absolute rounded-0 tiny": "list-group rounded-0 position-absolute"}>
                     {SuggestionsHtml}
                 </ul>
             </Fragment>
-           
         )
         
     }
