@@ -17,18 +17,14 @@ class Data extends Component {
     }    
   }
 
-  componentWillUnmount() {
-    console.log("ComponentWillUnmount()");
-  }
-
   componentDidMount() {
-    console.log("ComponentDidMount()");
     this.createGraph();
+
   }
 
   componentDidUpdate() {
     this.createGraph();
-    console.log("componentDidUpdate()");
+    
   }
 
   getSnapshotBeforeUpdate() {
@@ -258,7 +254,6 @@ class Data extends Component {
   }
   
   render() {
-    console.log("Component is rendering\n");
     let cityName= decodeURIComponent(document.location.pathname.replace("/weather/","").split("&")[0]);
     let lat = document.location.pathname.replace("/","").split("&")[1];
     let long = document.location.pathname.replace("/","").split("&")[2];
