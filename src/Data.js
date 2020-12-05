@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import Chart from "chart.js";
 import { withRouter } from "react-router-dom";
 
-class Map extends Component {
+class Data extends Component {
 
   constructor(props) {
     super(props);
@@ -305,4 +305,4 @@ class Map extends Component {
   
 }
 
-export default withRouter(Map);
+export default withRouter(Data);
