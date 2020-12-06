@@ -57,7 +57,7 @@ code {
 
 .bg-image {
   position: absolute;
-  background-image: url("/weather/ngari-china.jpg");
+  background-image: url("/Weather/ngari-china.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

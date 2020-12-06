@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 class Previous extends Component {
 
     onClick = () => {
-        this.props.history.push("/weather");
+        this.props.history.push("/Weather");
         return;
     }
 

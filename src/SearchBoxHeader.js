@@ -59,7 +59,7 @@ class SearchBoxHeader extends Component{
     }
 
     onClick = (event,suggestion,lat,long) => {
-        this.props.history.push("/weather/"+suggestion+"&"+lat+"&"+long);
+        this.props.history.push("/Weather/"+suggestion+"&"+lat+"&"+long);
         return;
     }
 
