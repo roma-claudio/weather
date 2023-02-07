@@ -37,7 +37,8 @@ class Data extends Component {
     let lat = document.location.pathname.replace("/","").split("&")[1];
     let long = document.location.pathname.replace("/","").split("&")[2];
     
-    fetch("https://nodejs-295719.ew.r.appspot.com/stats?lat="+lat+"&long="+long)
+    // fetch("https://nodejs-295719.ew.r.appspot.com/stats?lat="+lat+"&long="+long)
+    fetch("http://localhost:4000/stats?lat="+lat+"&long="+long)
     .then( response => response.json())
     .then( (response) => {
 

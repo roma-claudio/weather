@@ -33,7 +33,7 @@ class SearchBoxHeader extends Component{
 
     onChange = e => {
         const input = e.currentTarget.value;
-        fetch("https://nodejs-295719.ew.r.appspot.com/city?"+input)
+        fetch("http://localhost:4000/city?"+input)
         .then( result => result.json() )
         .then( (result) => {
             let places = [];
