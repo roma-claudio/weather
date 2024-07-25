@@ -1,22 +1,22 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import {BrowserRouter, Switch, Route} from 'react-router-dom';
+import { createRoot} from 'react-dom/client';
+import {BrowserRouter, Route, Routes, Navigate} from 'react-router-dom';
 import './index.css';
 import Search from './Search.js';
 import Result from './Result';
 
-ReactDOM.render(
+const root = createRoot(
+  document.getElementById('root')
+);
+
+root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Switch>
-        <Route exact strict path="/Weather/(.*.{1,})">
-          <Result/> 
-        </Route>
-        <Route>
-          <Search/>
-        </Route>
-      </Switch>
+      <Routes>
+        <Route exact strict path="/Weather/(.*.{1,})" element={<Result/>} />
+        <Route exact path="/" element={<Search />}/>
+        <Route path="*" element={<Navigate replace to={"/"} />} />
+      </Routes>
     </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 );

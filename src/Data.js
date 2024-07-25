@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import Chart from "chart.js";
-import { withRouter } from "react-router-dom";
+import Chart from "chart.js/auto";
+import { withRouter } from "./Util.router";
 
 class Data extends Component {
 
