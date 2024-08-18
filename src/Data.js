@@ -1,49 +1,40 @@
-import React, { Component, Fragment } from 'react';
-import Chart from "chart.js/auto";
+import React, { Fragment, useEffect, useRef, useState } from 'react';
+import { Chart } from "chart.js";
+import "chart.js/auto";
 import { withRouter } from "./Util.router";
 
-class Data extends Component {
+const Data = (props) => {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      stats: {
-        start: "",
-        end: "",
-        executionTime: "",
-        generatedTime: "",
-        source: ""
-      }
-    }    
-  }
+  const [stats, setStats] = useState({
+    start: "",
+    end: "",
+    executionTime: "",
+    generatedTime: "",
+    source: ""
+  });
 
-  componentDidMount() {
-    this.createGraph();
+  const ref = useRef();
 
-  }
+  useEffect(() => {
+    createGraph();
+  }, []);
 
-  componentDidUpdate() {
-    this.createGraph();
-    
-  }
-
-  getSnapshotBeforeUpdate() {
+  const getSnapshotBeforeUpdate = () => {
     //this.createGraph();
     return true;
   }
 
-  createGraph() {
+  const createGraph = () =>  {
     //let coordinates = document.location.pathname.replace("/","").split("&");
     let lat = document.location.pathname.replace("/","").split("&")[1];
     let long = document.location.pathname.replace("/","").split("&")[2];
     
-    // fetch("https://nodejs-295719.ew.r.appspot.com/stats?lat="+lat+"&long="+long)
-    fetch("http://localhost:4000/stats?lat="+lat+"&long="+long)
+    fetch("https://roma-claudio-weather.vercel.app/stats?lat="+lat+"&long="+long)
     .then( response => response.json())
     .then( (response) => {
 
         //Remove the label from the chart
-        Chart.defaults.global.legend.display = false;
+        // Chart.defaults.global.legend.display = false;
         
         var averageTemperatureChartElement = document.getElementById('averageTemperatureChart');
         var maxTemperatureChartElement = document.getElementById('maxTemperatureChart');
@@ -68,6 +59,7 @@ class Data extends Component {
         gradientMinT.addColorStop(1, 'rgba(185,46,249,0.1)');
 
         new Chart(averageTemperatureChartElement, {
+            ref,
             type: "line",
             data: {
                 //Bring in data
@@ -254,7 +246,7 @@ class Data extends Component {
     });
   }
   
-  render() {
+  
     let cityName= decodeURIComponent(document.location.pathname.replace("/Weather/","").split("&")[0]);
     let lat = document.location.pathname.replace("/","").split("&")[1];
     let long = document.location.pathname.replace("/","").split("&")[2];
@@ -295,7 +287,6 @@ class Data extends Component {
             </div>
           </Fragment>
       );
-  }
   
 
   

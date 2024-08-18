@@ -1,70 +1,65 @@
-import React, { Component, Fragment } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import { withRouter } from "./Util.router";
+import { useNavigate } from "react-router-dom";
 
-class SearchBox extends Component{
-    constructor(props) {
-        super(props);
-        this.state = {
-            suggestions: [],
-            coordinates: [],
-            show: false,
-            input: "",
-            selectedCoordinates: null
-        }
-    }
+const SearchBox = (props) => {
+    const [suggestions, setSuggestions] = useState([]);
+    const [coordinates, setCoordinates] = useState([]);
+    const [show, setShow] = useState(false);
+    const [input, setInput] = useState("");
+    const [selected, setSelected] = useState(null);
 
-    getSelectedElement = () => {
-        let selectedOption;
-        for (let option of document.getElementById("result-list").children) {
-            if (option.classList.contains("selected")) {
-                selectedOption = option;
-                break;
-            }
-        }
+    const navigate = useNavigate();
 
-        return ({
-            cityName: selectedOption.dataset.cityName,
-            coordinates: {
-                lat: selectedOption.dataset.coordinatesLat,
-                long: selectedOption.dataset.coordinatesLong
-            }
-        });
-    }
+    // const getSelectedElement = () => {
+    //     let selectedOption;
+    //     for (let option of document.getElementById("result-list").children) {
+    //         if (option.classList.contains("selected")) {
+    //             selectedOption = option;
+    //             break;
+    //         }
+    //     }
 
-    onChange = e => {
+    //     return ({
+    //         cityName: selectedOption.dataset.cityName,
+    //         coordinates: {
+    //             lat: selectedOption.dataset.coordinatesLat,
+    //             long: selectedOption.dataset.coordinatesLong
+    //         }
+    //     });
+    // }
+
+    const onChange = e => {
         const input = e.currentTarget.value;
-        // fetch("https://nodejs-295719.ew.r.appspot.com/city?"+input)
-        fetch("http://localhost:4000/city?address="+input)
+        fetch("https://roma-claudio-weather.vercel.app/city?address="+input)
         .then( result => result.json() )
         .then( (result) => {
             let places = [];
             let distance = [];
             let coordinates = [];
-            result.results.forEach((r) => {
-                if (r.category !== "street-square") {
+            result.items.forEach((r) => {
+                if (r.resultType === "locality") {
                    places.push(r.title)
                    distance.push(r.distance);
                    coordinates.push(r.position) 
                 }
             });
 
-            this.setState({
-                selected: -1,
-                suggestions: places,
-                show: true,
-                input: input,
-                coordinates: coordinates
-            });
-        }).catch(e => {console.log(e)});
+            setSelected(-1)
+            setSuggestions(places);
+            setShow(true);
+            setInput(input);
+            setCoordinates(coordinates);
 
+        }).catch(e => {console.log(e)});
     }
 
-    onClick = (event,suggestion,lat,long) => {
-        this.props.history.push("/Weather/"+suggestion+"&"+lat+"&"+long);
+    const onClick = (event,suggestion,lat,long) => {
+        navigate("/Weather/"+suggestion+"&"+lat+"&"+long);
         return;
     }
 
-    onKeyDown = e => {
+    const onKeyDown = e => {
         //Arrow down
         if (e.keyCode === 40) {
             /*
@@ -102,14 +97,7 @@ class SearchBox extends Component{
         }
     }
 
-    scrollToSelected = elementId => {
-        document.getElementById(elementId).childNodes.forEach( (e) =>  {
-            if (e.classList.contains('selected') && !this.isInViewport(e)) e.scrollIntoView(true);
-        });
-        
-    }
-
-    isInViewport = element => {
+    const isInViewport = element => {
         const rect = element.getBoundingClientRect();
         return (
             rect.top >= 0 &&
@@ -119,46 +107,52 @@ class SearchBox extends Component{
         );
     }
 
-    componentDidUpdate() {
-        this.scrollToSelected('result-list');
-
+    const scrollToSelected = elementId => {
+        document.getElementById(elementId).childNodes.forEach( (e) =>  {
+            if (e.classList.contains('selected') && !isInViewport(e)) e.scrollIntoView(true);
+        });
     }
 
-    render() {
+    useEffect(() => {
+        // Clean up function
+        return () => {
+            // scrollToSelected('result-list');
+        }
+    }, []);
 
-        let SuggestionsHtml = []
-        
-        this.state.suggestions.forEach((suggestion, index) => {
-            SuggestionsHtml.push(
-                <li 
-                    data-coordinates-lat={this.state.coordinates[index][0]}
-                    data-coordinates-long={this.state.coordinates[index][1]}
-                    className={ suggestion === this.state.input ? "list-group-item selected" : "list-group-item"}
-                    onClick={(ev) => this.onClick(ev,suggestion, this.state.coordinates[index][0], this.state.coordinates[index][1])}
-                    key={suggestion+index}
-                    >
-                        {suggestion}
-                </li>
-            );        
-        })
-       
-        return(
-            <Fragment>
-                <div className="input-group">
-                    <div className="input-group-prepend">
-                        <span className="input-group-text rounded-0" id="basic-addon1">
-                            <i className="fas fa-search fa-xs"></i>
-                        </span>
-                    </div>
-                    <input className={this.props.size === "tiny" ? "form-control rounded-0 tiny" : "form-control rounded-0"} type="text" placeholder="City" aria-label="City" onChange={this.onChange} onKeyDown={this.onKeyDown}/>
+    
+
+    let SuggestionsHtml = []
+    
+    suggestions.forEach((suggestion, index) => {
+        SuggestionsHtml.push(
+            <li 
+                data-coordinates-lat={coordinates[index]['lat']}
+                data-coordinates-long={coordinates[index]['lng']}
+                className={ suggestion === input ? "list-group-item selected" : "list-group-item"}
+                onClick={(ev) => onClick(ev,suggestion, coordinates[index]['lat'], coordinates[index]['lng'])}
+                key={suggestion+index}
+                >
+                    {suggestion}
+            </li>
+        );        
+    })
+    
+    return(
+        <Fragment>
+            <div className="input-group">
+                <div className="input-group-prepend">
+                    <span className="input-group-text rounded-0" id="basic-addon1">
+                        <i className="fas fa-search fa-xs"></i>
+                    </span>
                 </div>
-                <ul id="result-list" className={this.props.size === 'tiny' ? "list-group position-absolute rounded-0 tiny": "list-group rounded-0 position-absolute"}>
-                    {SuggestionsHtml}
-                </ul>
-            </Fragment>
-        )
-        
-    }
+                <input className={props.size === "tiny" ? "form-control rounded-0 tiny" : "form-control rounded-0"} type="text" placeholder="City" aria-label="City" onChange={onChange} onKeyDown={onKeyDown}/>
+            </div>
+            <ul id="result-list" className={props.size === 'tiny' ? "list-group position-absolute rounded-0 tiny": "list-group rounded-0 position-absolute"}>
+                {SuggestionsHtml}
+            </ul>
+        </Fragment>
+    )
 
 }
 

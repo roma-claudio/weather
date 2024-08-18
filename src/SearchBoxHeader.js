@@ -33,7 +33,7 @@ class SearchBoxHeader extends Component{
 
     onChange = e => {
         const input = e.currentTarget.value;
-        fetch("http://localhost:4000/city?"+input)
+        fetch("https://roma-claudio-weather.vercel.app/city?"+input)
         .then( result => result.json() )
         .then( (result) => {
             let places = [];

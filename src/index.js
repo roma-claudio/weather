@@ -13,7 +13,7 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route exact strict path="/Weather/(.*.{1,})" element={<Result/>} />
+        <Route exact strict path="/Weather/*" element={<Result/>} />
         <Route exact path="/" element={<Search />}/>
         <Route path="*" element={<Navigate replace to={"/"} />} />
       </Routes>
