@@ -7,7 +7,7 @@ function Result (props) {
     <Fragment>
       <Previous/>
       <div className="container h-100">
-        <Data cityName={decodeURIComponent(document.location.pathname.replace("/","").split("&")[0])} lat={document.location.pathname.replace("/","").split("&")[1]} long={document.location.pathname.replace("/","").split("&")[2]} />
+        <Data />
       </div>
     </Fragment>
   );

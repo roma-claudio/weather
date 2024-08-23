@@ -13,9 +13,9 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route exact strict path="/Weather/*" element={<Result/>} />
-        <Route exact path="/" element={<Search />}/>
-        <Route path="*" element={<Navigate replace to={"/"} />} />
+        <Route path="/Weather/*" element={<Result />} />
+        <Route path="/" element={<Search />} />
+        <Route path="*" element={<Navigate replace to="/Weather" />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
