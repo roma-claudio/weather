@@ -61,7 +61,7 @@ class SearchBoxHeader extends Component {
 
 	onClick = (event, suggestion, lat, long) => {
 		this.props.history.push(
-			`/Weather?city=${suggestion}&${lat}&${long}`,
+			`/weather/results?city=${suggestion}&${lat}&${long}`,
 		);
 		return;
 	};

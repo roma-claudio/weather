@@ -1,6 +1,6 @@
 ## Demo
 
-A Demo of the project is available [here](https://roma-claudio.github.io/Weather/)
+A Demo of the project is available [here](https://roma-claudio.github.io/weather)
 
 ## Available Scripts
 

@@ -6,7 +6,7 @@ function Header() {
         <Fragment>
             <nav className="navbar navbar-expand-lg navbar-light w-100 container">
                 <div className="col-8 d-flex mr-auto ml-auto">
-                    <a className="navbar-brand" href="/Weather/">Home</a>
+                    <a className="navbar-brand" href="/weather">Home</a>
                     <div className="collapse navbar-collapse">
                         <SearchBoxHeader size="tiny"/>
                     </div>

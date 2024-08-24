@@ -59,7 +59,7 @@ const SearchBox = (props) => {
 	};
 
 	const onClick = (event, suggestion, lat, long) => {
-		navigate(`/Weather?city=${suggestion}&lat=${lat}&long=${long}`);
+		navigate(`/weather/results?city=${suggestion}&lat=${lat}&long=${long}`);
 		return;
 	};
 
