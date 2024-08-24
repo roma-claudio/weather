@@ -6,7 +6,7 @@ function Result (props) {
   return (
     <Fragment>
       <Previous/>
-      <div className="container h-100">
+      <div className="container-xl h-100">
         <Data />
       </div>
     </Fragment>

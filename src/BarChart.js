@@ -4,6 +4,10 @@ import "chart.js/auto";
 
 const BarChart = ({ chartId, datasets }) => {
 	const ref = useRef();
+	Chart.defaults.plugins.legend.display = false;
+	Chart.defaults.layout.padding.left = "5px";
+	Chart.defaults.layout.autoPadding = false;
+	console.log(Chart.defaults);
 
 	useEffect(() => {
 		if (!(datasets && chartId)) {
@@ -33,16 +37,6 @@ const BarChart = ({ chartId, datasets }) => {
 						"Dec",
 					],
 					datasets,
-				},
-				options: {
-                    responsive: true,
-                    datasetStrokeWidth : 3,
-                    pointDotStrokeWidth : 4,
-					layout: {
-						padding: {
-							left: -5,
-						},
-					},
 				},
 			});
 		} catch (e) {

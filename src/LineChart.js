@@ -15,12 +15,12 @@ const LineChart = ({ chartId, datasets, gradient, fillColor }) => {
 		linearGradient.addColorStop(0, gradient.firstColorStop);
 		linearGradient.addColorStop(1, gradient.secondColorStop);
 
-        if (datasets[0].fill) {
-            datasets[0].fillColor = linearGradient;
-        } else {
-            datasets[0].borderColor = linearGradient;
-            datasets[0].borderColor = linearGradient;
-        }
+		if (datasets[0].fill) {
+			datasets[0].fillColor = linearGradient;
+		} else {
+			datasets[0].borderColor = linearGradient;
+			datasets[0].borderColor = linearGradient;
+		}
 
 		try {
 			new Chart(context, {
@@ -43,32 +43,6 @@ const LineChart = ({ chartId, datasets, gradient, fillColor }) => {
 						"Dec",
 					],
 					datasets,
-				},
-				options: {
-					scales: {
-						yAxes: [
-							{
-								ticks: {
-									display: true, //this will remove only the label
-								},
-								gridLines: {
-									drawBorder: false,
-								},
-							},
-						],
-						xAxes: [
-							{
-								gridLines: {
-									drawBorder: false,
-								},
-							},
-						],
-					},
-					layout: {
-						padding: {
-							left: -5,
-						},
-					},
 				},
 			});
 		} catch (e) {

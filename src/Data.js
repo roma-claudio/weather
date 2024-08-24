@@ -3,6 +3,7 @@ import config from "./Config";
 import { withRouter } from "./Util.router";
 import LineChart from "./LineChart";
 import BarChart from "./BarChart";
+import Loader from "./Loader";
 
 const Data = () => {
 	const [averageTemperatureChart, setAverageTemperatureChart] = useState(null);
@@ -14,139 +15,87 @@ const Data = () => {
 	const lat = urlParams.get("lat");
 	const long = urlParams.get("long");
 	const cityName = urlParams.get("city").split(",")[0];
+	const [isLoaded, setIsLoaded] = useState(false);
 
 	useEffect(() => {
 		fetch(`${config.baseApiUrl}/stats?lat=${lat}&long=${long}`)
 			.then((response) => response.json())
 			.then((response) => {
-
-
-				setAverageTemperatureChart({
-					datasets: [
-						{
-							label: "Average Temperature",
-							strokeColor : "#ff6c23",
-							pointColor : "#fff",
-							pointStrokeColor : "#ff6c23",
-							pointHighlightFill: "#fff",
-							pointHighlightStroke: "#ff6c23",
-							data: [
-								response.data[0].tavg,
-								response.data[1].tavg,
-								response.data[2].tavg,
-								response.data[3].tavg,
-								response.data[4].tavg,
-								response.data[5].tavg,
-								response.data[6].tavg,
-								response.data[7].tavg,
-								response.data[8].tavg,
-								response.data[9].tavg,
-								response.data[10].tavg,
-								response.data[11].tavg,
-							],
-							fill: "start",
+				setTimeout(() => {
+					setIsLoaded(true);
+					setAverageTemperatureChart({
+						datasets: [
+							{
+								strokeColor: "#ff6c23",
+								pointColor: "#fff",
+								pointStrokeColor: "#ff6c23",
+								pointHighlightFill: "#fff",
+								pointHighlightStroke: "#ff6c23",
+								data: response.data.map((data) => data.tavg),
+								fill: false,
+							},
+						],
+						gradient: {
+							min: 300,
+							firstColorStop: "rgba(0, 0, 0, 0.25)",
+							secondColorStop: "rgba(0, 0, 0, 0.25)",
 						},
-					],
-					gradient: {
-						min: 400,
-						firstColorStop: "rgba(250,174,50,1)",
-						secondColorStop: "rgba(250,174,50,0)",
-					},
-				});
+					});
 
-				setMaxTemperatureChart({
-					datasets: [
-						{
-							label: "Average Max Temperature",
-							strokeColor: "#ff6c23",
-							pointColor: "#fff",
-							pointStrokeColor: "#ff6c23",
-							pointHighlightFill: "#fff",
-							pointHighlightStroke: "#ff6c23",
-							data: [
-								response.data[0].tmax,
-								response.data[1].tmax,
-								response.data[2].tmax,
-								response.data[3].tmax,
-								response.data[4].tmax,
-								response.data[5].tmax,
-								response.data[6].tmax,
-								response.data[7].tmax,
-								response.data[8].tmax,
-								response.data[9].tmax,
-								response.data[10].tmax,
-								response.data[11].tmax,
-							],
-							fill: false,
+					setMaxTemperatureChart({
+						datasets: [
+							{
+								strokeColor: "#ff6c23",
+								pointColor: "#fff",
+								pointStrokeColor: "#ff6c23",
+								pointHighlightFill: "#fff",
+								pointHighlightStroke: "#ff6c23",
+								data: response.data.map((data) => data.tmax),
+								fill: false,
+							},
+						],
+						gradient: {
+							min: 400,
+							firstColorStop: "rgba(179, 0, 0, 1)",
+							secondColorStop: "rgba(250,174,50,0.25)",
 						},
-					],
-					gradient: {
-						min: 400,
-						firstColorStop: "rgba(249,107,46,1)",
-						secondColorStop: "rgba(250,174,50,0.45)",
-					},
-				});
+					});
 
-				setMinTemperatureChart({
-					datasets: [
-						{
-							label: "Average Min Temperature",
-
-							strokeColor: "#ff6c23",
-							pointColor: "#fff",
-							pointStrokeColor: "#ff6c23",
-							pointHighlightFill: "#fff",
-							pointHighlightStroke: "#ff6c23",
-
-							data: [
-								response.data[0].tmin,
-								response.data[1].tmin,
-								response.data[2].tmin,
-								response.data[3].tmin,
-								response.data[4].tmin,
-								response.data[5].tmin,
-								response.data[6].tmin,
-								response.data[7].tmin,
-								response.data[8].tmin,
-								response.data[9].tmin,
-								response.data[10].tmin,
-								response.data[11].tmin,
-							],
-							fill: false,
+					setMinTemperatureChart({
+						datasets: [
+							{
+								strokeColor: "#ff6c23",
+								pointColor: "#fff",
+								pointStrokeColor: "#ff6c23",
+								pointHighlightFill: "#fff",
+								pointHighlightStroke: "#ff6c23",
+								data: response.data.map((data) => data.tmin),
+								fill: false,
+							},
+						],
+						gradient: {
+							min: 300,
+							firstColorStop: "rgba(50,178,250,1)",
+							secondColorStop: "rgba(185,46,249,0.25)",
 						},
-					],
-					gradient: {
-						min: 300,
-						firstColorStop: "rgba(50,178,250,1)",
-						secondColorStop: "rgba(185,46,249,0.1)",
-					},
-				});
+					});
 
-				setPrecipitationChart({
-					datasets: [
-						{
-							label: "Average precipitation",
-							borderColor: "rgba(75, 192, 192, 1)",
-							backgroundColor: "rgba(75, 192, 192, 0.2)",
-							data: [
-								response.data[0].prcp,
-								response.data[1].prcp,
-								response.data[2].prcp,
-								response.data[3].prcp,
-								response.data[4].prcp,
-								response.data[5].prcp,
-								response.data[6].prcp,
-								response.data[7].prcp,
-								response.data[8].prcp,
-								response.data[9].prcp,
-								response.data[10].prcp,
-								response.data[11].prcp,
-							],
-						},
-					],
-				});
+					setPrecipitationChart({
+						datasets: [
+							{
+								borderColor: "rgba(75, 192, 192, 1)",
+								backgroundColor: "rgba(75, 192, 192, 0.2)",
+								data: response.data.map((data) => data.prcp),
+							},
+						],
+					});
+				}, 750);
 			});
 	}, [lat, long]);
+
+	if (!isLoaded) {
+		return <Loader />;
+	}
 
 	return (
 		<Fragment>
@@ -164,70 +113,102 @@ const Data = () => {
 					</div>
 
 					<div className="classic-tabs p-2">
-						<div className="tab-content rounded-bottom">
-							<p className="display-5 text-muted align-self-end">
-								Average Temperature
-							</p>
+						<div
+							className="tab-content rounded-bottom"
+							style={{
+								display: "flex",
+								flexWrap: "wrap",
+								alignItems: "center",
+								justifyContent: "start",
+							}}
+						>
 							<div
-								className="tab-pane fade in show active"
-								id="panel1001"
-								role="tabpanel"
+								style={{
+									flex: "1 0 21%",
+								}}
 							>
-								{averageTemperatureChart && (
-									<LineChart
-										chartId="averageTemperatureChart"
-										datasets={averageTemperatureChart.datasets}
-										gradient={averageTemperatureChart.gradient}
-									/>
-								)}
+								<p className="display-5 text-muted align-self-end">
+									Average Temperature (°C)
+								</p>
+								<div
+									className="tab-pane fade in show active"
+									id="panel1001"
+									role="tabpanel"
+								>
+									{averageTemperatureChart && (
+										<LineChart
+											chartId="averageTemperatureChart"
+											datasets={averageTemperatureChart.datasets}
+											gradient={averageTemperatureChart.gradient}
+										/>
+									)}
+								</div>
 							</div>
-							<p className="display-5 text-muted align-self-end mt-5">
-								Max Temperature
-							</p>
 							<div
-								className="tab-pane fade in show active"
-								id="panel1002"
-								role="tabpanel"
+								style={{
+									flex: "1 0 21%",
+								}}
 							>
-								{maxTemperatureChart && (
-									<LineChart
-										chartId="maxTemperatureChart"
-										datasets={maxTemperatureChart.datasets}
-										gradient={maxTemperatureChart.gradient}
-									/>
-								)}
+								<p className="display-5 text-muted align-self-end">
+									Max Temperature (°C)
+								</p>
+								<div
+									className="tab-pane fade in show active"
+									id="panel1002"
+									role="tabpanel"
+								>
+									{maxTemperatureChart && (
+										<LineChart
+											chartId="maxTemperatureChart"
+											datasets={maxTemperatureChart.datasets}
+											gradient={maxTemperatureChart.gradient}
+										/>
+									)}
+								</div>
 							</div>
-							<p className="display-5 text-muted align-self-end mt-5">
-								Min Temperature
-							</p>
 							<div
-								className="tab-pane fade in show active"
-								id="panel1003"
-								role="tabpanel"
+								style={{
+									flex: "1 0 21%",
+								}}
 							>
-								{minTemperatureChart && (
-									<LineChart
-										chartId="minTemperatureChart"
-										datasets={minTemperatureChart.datasets}
-										gradient={minTemperatureChart.gradient}
-									/>
-								)}
+								<p className="display-5 text-muted align-self-end mt-5">
+									Min Temperature (°C)
+								</p>
+								<div
+									className="tab-pane fade in show active"
+									id="panel1003"
+									role="tabpanel"
+								>
+									{minTemperatureChart && (
+										<LineChart
+											chartId="minTemperatureChart"
+											datasets={minTemperatureChart.datasets}
+											gradient={minTemperatureChart.gradient}
+										/>
+									)}
+								</div>
 							</div>
-							<p className="display-5 text-muted align-self-end mt-5">
-								Average Precipitations
-							</p>
 							<div
-								className="tab-pane fade in show active"
-								id="panel1004"
-								role="tabpanel"
+								style={{
+									flex: "1 0 21%",
+								}}
 							>
-								{precipitationChart && (
-									<BarChart
-										chartId="precipitationChart"
-										datasets={precipitationChart.datasets}
-										gradient={precipitationChart.gradient}
-									/>
-								)}
+								<p className="display-5 text-muted align-self-end mt-5">
+									Average Precipitations (mm)
+								</p>
+								<div
+									className="tab-pane fade in show active"
+									id="panel1004"
+									role="tabpanel"
+								>
+									{precipitationChart && (
+										<BarChart
+											chartId="precipitationChart"
+											datasets={precipitationChart.datasets}
+											gradient={precipitationChart.gradient}
+										/>
+									)}
+								</div>
 							</div>
 						</div>
 					</div>
