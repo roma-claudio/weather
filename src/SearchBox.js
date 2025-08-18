@@ -33,17 +33,18 @@ const SearchBox = (props) => {
 	const onChange = (e) => {
 		const input = e.currentTarget.value;
 		fetch(`${config.baseApiUrl}/city?address=${input}`)
-			.then((result) => result.json())
-			.then((result) => {
+			.then((response) => response.json())
+			.then((results) => {
 				const places = [];
-				const distance = [];
 				const coordinates = [];
 
-				for (const resultItem of result.items) {
-					if (resultItem.resultType === "locality") {
-						places.push(resultItem.title);
-						distance.push(resultItem.distance);
-						coordinates.push(resultItem.position);
+				for (const result of results) {
+					if (result.addresstype === "city") {
+						places.push(result.address.city);
+						coordinates.push({
+							lat: result.lat,
+							lng: result.lon,
+						});
 					}
 				}
 
@@ -67,37 +68,37 @@ const SearchBox = (props) => {
 		//Arrow down
 		if (e.keyCode === 40) {
 			/*
-            if ( (this.state.suggestions.length - 1) === this.state.selected) return;
-            e.target.value = this.state.suggestions[this.state.selected + 1];
-            this.setState({
-                selected: this.state.selected + 1,
-                show: false,
-                input: this.state.suggestions[this.state.selected + 1],
-            })
-            */
+			if ( (this.state.suggestions.length - 1) === this.state.selected) return;
+			e.target.value = this.state.suggestions[this.state.selected + 1];
+			this.setState({
+				selected: this.state.selected + 1,
+				show: false,
+				input: this.state.suggestions[this.state.selected + 1],
+			})
+			*/
 			return;
 		}
 
 		//Arrow up
 		if (e.keyCode === 38) {
 			/*
-            if (this.state.selected === 0 ) return;
-            e.target.value = this.state.suggestions[this.state.selected - 1];
-            this.setState({
-                selected: this.state.selected - 1,
-                show: false,
-                input: this.state.suggestions[this.state.selected - 1],
-            })
-            */
+			if (this.state.selected === 0 ) return;
+			e.target.value = this.state.suggestions[this.state.selected - 1];
+			this.setState({
+				selected: this.state.selected - 1,
+				show: false,
+				input: this.state.suggestions[this.state.selected - 1],
+			})
+			*/
 			return;
 		}
 
 		//Enter
 		if (e.keyCode === 13) {
 			/*
-            this.props.history.push(document.location.pathname+"/"+this.state.suggestions[this.state.selected]+"&"+this.state.coordinates[this.state.selected][0]+"&"+this.state.coordinates[this.state.selected][1]);
-            return;
-            */
+			this.props.history.push(document.location.pathname+"/"+this.state.suggestions[this.state.selected]+"&"+this.state.coordinates[this.state.selected][0]+"&"+this.state.coordinates[this.state.selected][1]);
+			return;
+			*/
 		}
 	};
 
