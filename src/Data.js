@@ -1,9 +1,10 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState, useRef } from "react";
 import config from "./Config";
 import { withRouter } from "./Util.router";
 import LineChart from "./LineChart";
 import BarChart from "./BarChart";
 import Loader from "./Loader";
+import { debounce } from "lodash";
 
 const Data = () => {
 	const [averageTemperatureChart, setAverageTemperatureChart] = useState(null);
@@ -17,81 +18,94 @@ const Data = () => {
 	const cityName = urlParams.get("city").split(",")[0];
 	const [isLoaded, setIsLoaded] = useState(false);
 
+	const fetchStats = useRef(
+		debounce((latVal, longVal) => {
+			fetch(`${config.baseApiUrl}/stats?lat=${latVal}&long=${longVal}`)
+				.then((response) => response.json())
+				.then((response) => {
+					setTimeout(() => {
+						setIsLoaded(true);
+						setAverageTemperatureChart({
+							datasets: [
+								{
+									strokeColor: "#ff6c23",
+									pointColor: "#fff",
+									pointStrokeColor: "#ff6c23",
+									pointHighlightFill: "#fff",
+									pointHighlightStroke: "#ff6c23",
+									data: response.data.map((data) => data.tavg),
+									fill: false,
+								},
+							],
+							gradient: {
+								min: 300,
+								firstColorStop: "rgba(0, 0, 0, 0.25)",
+								secondColorStop: "rgba(0, 0, 0, 0.25)",
+							},
+						});
+
+						setMaxTemperatureChart({
+							datasets: [
+								{
+									strokeColor: "#ff6c23",
+									pointColor: "#fff",
+									pointStrokeColor: "#ff6c23",
+									pointHighlightFill: "#fff",
+									pointHighlightStroke: "#ff6c23",
+									data: response.data.map((data) => data.tmax),
+									fill: false,
+								},
+							],
+							gradient: {
+								min: 400,
+								firstColorStop: "rgba(179, 0, 0, 1)",
+								secondColorStop: "rgba(250,174,50,0.25)",
+							},
+						});
+
+						setMinTemperatureChart({
+							datasets: [
+								{
+									strokeColor: "#ff6c23",
+									pointColor: "#fff",
+									pointStrokeColor: "#ff6c23",
+									pointHighlightFill: "#fff",
+									pointHighlightStroke: "#ff6c23",
+									data: response.data.map((data) => data.tmin),
+									fill: false,
+								},
+							],
+							gradient: {
+								min: 300,
+								firstColorStop: "rgba(50,178,250,1)",
+								secondColorStop: "rgba(185,46,249,0.25)",
+							},
+						});
+
+						setPrecipitationChart({
+							datasets: [
+								{
+									borderColor: "rgba(75, 192, 192, 1)",
+									backgroundColor: "rgba(75, 192, 192, 0.2)",
+									data: response.data.map((data) => data.prcp),
+								},
+							],
+						});
+					}, 750);
+				})
+				.catch((e) => {
+					console.log(e);
+				});
+		}, 1000)
+	).current;
+
 	useEffect(() => {
-		fetch(`${config.baseApiUrl}/stats?lat=${lat}&long=${long}`)
-			.then((response) => response.json())
-			.then((response) => {
-				setTimeout(() => {
-					setIsLoaded(true);
-					setAverageTemperatureChart({
-						datasets: [
-							{
-								strokeColor: "#ff6c23",
-								pointColor: "#fff",
-								pointStrokeColor: "#ff6c23",
-								pointHighlightFill: "#fff",
-								pointHighlightStroke: "#ff6c23",
-								data: response.data.map((data) => data.tavg),
-								fill: false,
-							},
-						],
-						gradient: {
-							min: 300,
-							firstColorStop: "rgba(0, 0, 0, 0.25)",
-							secondColorStop: "rgba(0, 0, 0, 0.25)",
-						},
-					});
+		fetchStats(lat, long);
 
-					setMaxTemperatureChart({
-						datasets: [
-							{
-								strokeColor: "#ff6c23",
-								pointColor: "#fff",
-								pointStrokeColor: "#ff6c23",
-								pointHighlightFill: "#fff",
-								pointHighlightStroke: "#ff6c23",
-								data: response.data.map((data) => data.tmax),
-								fill: false,
-							},
-						],
-						gradient: {
-							min: 400,
-							firstColorStop: "rgba(179, 0, 0, 1)",
-							secondColorStop: "rgba(250,174,50,0.25)",
-						},
-					});
-
-					setMinTemperatureChart({
-						datasets: [
-							{
-								strokeColor: "#ff6c23",
-								pointColor: "#fff",
-								pointStrokeColor: "#ff6c23",
-								pointHighlightFill: "#fff",
-								pointHighlightStroke: "#ff6c23",
-								data: response.data.map((data) => data.tmin),
-								fill: false,
-							},
-						],
-						gradient: {
-							min: 300,
-							firstColorStop: "rgba(50,178,250,1)",
-							secondColorStop: "rgba(185,46,249,0.25)",
-						},
-					});
-
-					setPrecipitationChart({
-						datasets: [
-							{
-								borderColor: "rgba(75, 192, 192, 1)",
-								backgroundColor: "rgba(75, 192, 192, 0.2)",
-								data: response.data.map((data) => data.prcp),
-							},
-						],
-					});
-				}, 750);
-			});
-	}, [lat, long]);
+		return () => {
+			if (fetchStats && fetchStats.cancel) fetchStats.cancel();
+		};
+	}, [lat, long, fetchStats]);
 
 	if (!isLoaded) {
 		return <Loader />;
