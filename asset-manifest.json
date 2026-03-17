@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/weather/static/css/main.01b77f2c.css",
-    "main.js": "/weather/static/js/main.38589933.js",
+    "main.css": "/weather/static/css/main.a4cdff86.css",
+    "main.js": "/weather/static/js/main.1548dcbc.js",
     "static/media/ngari-china.jpg": "/weather/static/media/ngari-china.4757b44c2f8aad5a2f70.jpg",
     "index.html": "/weather/index.html",
-    "main.01b77f2c.css.map": "/weather/static/css/main.01b77f2c.css.map",
-    "main.38589933.js.map": "/weather/static/js/main.38589933.js.map"
+    "main.a4cdff86.css.map": "/weather/static/css/main.a4cdff86.css.map",
+    "main.1548dcbc.js.map": "/weather/static/js/main.1548dcbc.js.map"
   },
   "entrypoints": [
-    "static/css/main.01b77f2c.css",
-    "static/js/main.38589933.js"
+    "static/css/main.a4cdff86.css",
+    "static/js/main.1548dcbc.js"
   ]
 }
