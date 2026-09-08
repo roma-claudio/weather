@@ -19,7 +19,10 @@
   },
   "overrides": {
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "resolve-url-loader": {
+      "postcss": "^8.5.12"
+    }
   },
   "devDependencies": {
     "gh-pages": "^6.3.0",
