@@ -22,6 +22,9 @@
     "react-dom": "^19.2.8",
     "resolve-url-loader": {
       "postcss": "8.5.18"
+    },
+    "react-scripts": {
+      "svgo": "2.8.4"
     }
   },
   "devDependencies": {
